@@ -23,3 +23,14 @@ Node.js, Express, SQLite, bcryptjs, jsonwebtoken, express-rate-limit, helmet, Gi
 ## Related project
 
 The CyberLab portfolio site: https://kazeemmayowa70-prog.github.io/CyberLab/
+
+## Security tests I ran
+
+I tested these on my own server only:
+
+- Wrong password and unknown username return the same error message
+- The 6th failed login within 15 minutes is blocked by rate limiting
+- A made-up token is rejected
+- A real token edited from `user` to `admin` is rejected (the signature no longer matches)
+- A regular user is blocked from the admin route
+- Usernames with spaces or symbols, and non-text input, are rejected
