@@ -27,7 +27,13 @@ app.get("/", (req, res) => {
   res.send("CyberLab server is running");
 });
 
-app.post("/register", async (req, res) => {
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { error: "Too many accounts created. Try again later." },
+});
+
+app.post("/register", registerLimiter, async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
