@@ -15,7 +15,7 @@ A small Node.js and Express backend where I practice real authentication and acc
 
 ## Important notes
 
-This is a learning project, not production software. Users are stored in a local SQLite database file (`cyberlab.db`) that is not uploaded to GitHub. The JWT secret is read from a private `.env` file (not uploaded to GitHub). Login is rate limited to 5 attempts per 15 minutes per device, and registration to 5 requests per hour per device. The server runs only on my phone and is not deployed online yet.
+This is a learning project, not production software. Users are stored in a local SQLite database file (`cyberlab.db`) that is not uploaded to GitHub. The JWT secret is read from a private `.env` file (not uploaded to GitHub). Login is rate limited to 5 attempts per 15 minutes per device, and registration to 5 requests per hour per device. The first account created becomes admin as a learning shortcut, which would not be safe on a public server. The server runs only on my phone and is not deployed online yet.
 
 ## Built with
 
