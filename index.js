@@ -12,6 +12,9 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) { console.error("JWT_SECRET is missing"); process.exit(1); }
 
+// Fake hash so unknown usernames take the same time as real ones
+const DUMMY_HASH = bcrypt.hashSync("not-a-real-password", 10);
+
 // Real database file (kept on the phone, survives restarts)
 const db = new DatabaseSync("cyberlab.db");
 db.exec(`
@@ -94,7 +97,10 @@ app.post("/login", loginLimiter, async (req, res) => {
   const fail = () =>
     res.status(401).json({ error: "Invalid username or password" });
 
-  if (!user) return fail();
+  if (!user) {
+    await bcrypt.compare(password, DUMMY_HASH);
+    return fail();
+  }
 
   const match = await bcrypt.compare(password, user.password_hash);
   if (!match) return fail();
