@@ -8,6 +8,7 @@ A small Node.js and Express backend where I practice real authentication and acc
 - **Login:** checks the password and returns a signed JWT that lasts 1 hour
 - **Same error message** for a wrong password and an unknown username, so attackers can't learn which usernames exist
 - **Input validation:** usernames must be 3-20 letters, numbers or underscores, and non-text input is rejected
+- **Security headers:** helmet adds protections like X-Frame-Options and Content-Security-Policy, and hides the X-Powered-By header
 - **Admin-only route:** the role is checked on the server, so users can't change it in their browser
 - **Fake or edited tokens** are rejected because the signature doesn't match
 
@@ -17,7 +18,7 @@ This is a learning project, not production software. Users are stored in a local
 
 ## Built with
 
-Node.js, Express, SQLite, bcryptjs, jsonwebtoken, express-rate-limit, Git and GitHub
+Node.js, Express, SQLite, bcryptjs, jsonwebtoken, express-rate-limit, helmet, Git and GitHub
 
 ## Related project
 
