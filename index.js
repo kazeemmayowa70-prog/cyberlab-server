@@ -2,9 +2,11 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 const { DatabaseSync } = require("node:sqlite");
 
 const app = express();
+app.use(helmet());
 app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET;
