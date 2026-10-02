@@ -1,18 +1,25 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 const rateLimit = require("express-rate-limit");
+const { DatabaseSync } = require("node:sqlite");
 
 const app = express();
 app.use(express.json());
 
-// Secret key used to sign tokens (temporary, for learning only)
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) { console.error("JWT_SECRET is missing"); process.exit(1); }
 
-// Temporary storage (lost when the server stops)
-const users = [];
+// Real database file (kept on the phone, survives restarts)
+const db = new DatabaseSync("cyberlab.db");
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'user'
+  )
+`);
 
 app.get("/", (req, res) => {
   res.send("CyberLab server is running");
@@ -29,15 +36,22 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ error: "Password must be 8+ characters" });
   }
 
-  if (users.find((u) => u.username === username)) {
+  const existing = db
+    .prepare("SELECT id FROM users WHERE username = ?")
+    .get(username);
+  if (existing) {
     return res.status(409).json({ error: "Username already taken" });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
 
   // First account ever created becomes admin (learning shortcut)
-  const role = users.length === 0 ? "admin" : "user";
-  users.push({ username, passwordHash, role });
+  const count = db.prepare("SELECT COUNT(*) AS n FROM users").get().n;
+  const role = count === 0 ? "admin" : "user";
+
+  db.prepare(
+    "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)"
+  ).run(username, passwordHash, role);
 
   res.status(201).json({ message: "Account created", role });
 });
@@ -55,14 +69,16 @@ app.post("/login", loginLimiter, async (req, res) => {
     return res.status(400).json({ error: "Username and password required" });
   }
 
-  const user = users.find((u) => u.username === username);
+  const user = db
+    .prepare("SELECT * FROM users WHERE username = ?")
+    .get(username);
 
   const fail = () =>
     res.status(401).json({ error: "Invalid username or password" });
 
   if (!user) return fail();
 
-  const match = await bcrypt.compare(password, user.passwordHash);
+  const match = await bcrypt.compare(password, user.password_hash);
   if (!match) return fail();
 
   const token = jwt.sign(
@@ -74,7 +90,6 @@ app.post("/login", loginLimiter, async (req, res) => {
   res.json({ message: "Login successful", token });
 });
 
-// Middleware: checks the token on every protected route
 function requireAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.replace("Bearer ", "");
@@ -87,7 +102,6 @@ function requireAuth(req, res, next) {
   }
 }
 
-// Middleware: only lets admins through
 function requireAdmin(req, res, next) {
   if (req.user.role !== "admin") {
     return res.status(403).json({ error: "Admin access required" });
