@@ -12,7 +12,7 @@ A small Node.js and Express backend where I practice real authentication and acc
 
 ## Important notes
 
-This is a learning project, not production software. Users are stored in memory and disappear when the server stops. The JWT secret is written in the code and should be moved to an environment variable. There is no rate limiting yet.
+This is a learning project, not production software. Users are stored in memory and disappear when the server stops. The JWT secret is read from a private `.env` file (not uploaded to GitHub). There is no rate limiting yet.
 
 ## Built with
 
