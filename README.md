@@ -12,11 +12,11 @@ A small Node.js and Express backend where I practice real authentication and acc
 
 ## Important notes
 
-This is a learning project, not production software. Users are stored in memory and disappear when the server stops. The JWT secret is read from a private `.env` file (not uploaded to GitHub). Login is rate limited to 5 attempts per 15 minutes per device. Data is not stored in a database yet.
+This is a learning project, not production software. Users are stored in a local SQLite database file (`cyberlab.db`) that is not uploaded to GitHub. The JWT secret is read from a private `.env` file (not uploaded to GitHub). Login is rate limited to 5 attempts per 15 minutes per device. The server runs only on my phone and is not deployed online yet.
 
 ## Built with
 
-Node.js, Express, bcryptjs, jsonwebtoken, Git and GitHub
+Node.js, Express, SQLite, bcryptjs, jsonwebtoken, express-rate-limit, Git and GitHub
 
 ## Related project
 
