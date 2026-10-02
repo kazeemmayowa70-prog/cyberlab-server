@@ -6,7 +6,8 @@ const app = express();
 app.use(express.json());
 
 // Secret key used to sign tokens (temporary, for learning only)
-const JWT_SECRET = "change-this-secret-later";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) { console.error("JWT_SECRET is missing"); process.exit(1); }
 
 // Temporary storage (lost when the server stops)
 const users = [];
