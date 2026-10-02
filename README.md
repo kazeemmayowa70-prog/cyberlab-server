@@ -7,6 +7,7 @@ A small Node.js and Express backend where I practice real authentication and acc
 - **Register:** creates an account and stores only a bcrypt hash of the password
 - **Login:** checks the password and returns a signed JWT that lasts 1 hour
 - **Same error message** for a wrong password and an unknown username, so attackers can't learn which usernames exist
+- **Input validation:** usernames must be 3-20 letters, numbers or underscores, and non-text input is rejected
 - **Admin-only route:** the role is checked on the server, so users can't change it in their browser
 - **Fake or edited tokens** are rejected because the signature doesn't match
 
