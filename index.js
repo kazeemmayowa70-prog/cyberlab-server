@@ -32,6 +32,16 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ error: "Username and password required" });
   }
 
+  if (typeof username !== "string" || typeof password !== "string") {
+    return res.status(400).json({ error: "Username and password must be text" });
+  }
+
+  if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
+    return res.status(400).json({
+      error: "Username must be 3-20 letters, numbers or underscores",
+    });
+  }
+
   if (password.length < 8) {
     return res.status(400).json({ error: "Password must be 8+ characters" });
   }
