@@ -2,6 +2,8 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const rateLimit = require("express-rate-limit");
+
 const app = express();
 app.use(express.json());
 
@@ -40,7 +42,13 @@ app.post("/register", async (req, res) => {
   res.status(201).json({ message: "Account created", role });
 });
 
-app.post("/login", async (req, res) => {
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: "Too many login attempts. Try again later." },
+});
+
+app.post("/login", loginLimiter, async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
