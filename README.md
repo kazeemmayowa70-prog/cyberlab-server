@@ -36,3 +36,9 @@ I tested these on my own server only:
 - A real token edited from `user` to `admin` is rejected (the signature no longer matches)
 - A regular user is blocked from the admin route
 - Usernames with spaces or symbols, and non-text input, are rejected
+
+## Login page
+
+A simple page in the `public` folder, served by the server at http://localhost:3000. I can register, log in, view my profile, open the admin area and log out. The login token is kept in memory only, so refreshing the page logs me out. Logout only clears the token in the browser. The server has no logout yet, so a token stays valid for 1 hour.
+
+Tested in Chrome on my phone: login, profile, admin area as admin, logout, and a regular user blocked from the admin area by the server.
