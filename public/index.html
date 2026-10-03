@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberLab Login</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="box">
+    <h1>CyberLab Login</h1>
+    <p class="note">This talks to my real server. Use test accounts only.</p>
+
+    <div id="authPanel">
+      <input id="username" type="text" placeholder="Username" autocomplete="username">
+      <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+      <button id="loginBtn">Login</button>
+      <button id="registerBtn" class="secondary">Register</button>
+    </div>
+
+    <div id="userPanel" hidden>
+      <p id="welcome"></p>
+      <button id="profileBtn">My profile</button>
+      <button id="adminBtn">Admin area</button>
+      <button id="logoutBtn" class="secondary">Logout</button>
+    </div>
+
+    <p id="message"></p>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>

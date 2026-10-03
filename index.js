@@ -8,6 +8,7 @@ const { DatabaseSync } = require("node:sqlite");
 const app = express();
 app.use(helmet());
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) { console.error("JWT_SECRET is missing"); process.exit(1); }
